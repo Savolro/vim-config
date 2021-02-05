@@ -9,5 +9,5 @@
 git clone git@github.com:Savolro/vim-config.git ~/.config/nvim 
 ```
 * start vim
-* run `:PlugUpdate"
+* run `:PlugUpdate`
 
