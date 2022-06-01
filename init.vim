@@ -12,15 +12,14 @@ nnoremap <A-l> :tabnext<CR>
 
 " clipboard
 set clipboard=unnamedplus
+set colorcolumn=72
 
 " Declare the list of plugins.
-Plug 'fatih/vim-go'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'rust-lang/rust.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'sstallion/vim-wtf'
+Plug 'dart-lang/dart-vim-plugin'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -30,18 +29,22 @@ set completeopt+=menuone,noselect,noinsert
 " Coc additions
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 autocmd CursorHold call CocActionAsync('showSignatureHelp')
+nnoremap gd :call CocActionAsync('jumpDefinition')<CR>
+nnoremap gr :call CocActionAsync('jumpReferences')<CR>
 
 " Golang
-let g:go_auto_sameids = 1
-let g:go_auto_type_info = 1
-let g:go_fmt_command = 'goimports'
-let g:go_highligh_build_constraints = 1
+let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_types = 1
+
+let g:dart_highlight_types = 1
+
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+autocmd BufWritePre * :silent call CocAction('format')
 
 function ColorToANSI(color)
 	if a:color == 81
@@ -99,3 +102,7 @@ hi PmenuSel ctermbg=12 ctermfg=0
 hi ErrorMsg ctermbg=0 ctermfg=1
 hi Error ctermbg=0 ctermfg=1
 hi Search ctermbg=1 ctermfg=0
+
+" note autoupdate
+autocmd BufWritePost ~/dev/stuff/notes/* :!git add .; git commit -m "update %:."; git push &
+autocmd VimEnter ~/dev/stuff/notes :!git pull &
