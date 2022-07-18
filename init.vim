@@ -103,6 +103,48 @@ hi ErrorMsg ctermbg=0 ctermfg=1
 hi Error ctermbg=0 ctermfg=1
 hi Search ctermbg=1 ctermfg=0
 
+" This is not really safe to use
+function UpdateModifiedDate(filePath)
+	silent! execute '!sed -Ei "s/modified: [0-9]*-[0-9]*-[0-9]*T[0-9]*:[0-9]*:[0-9]*\+[0-9]*:[0-9]*/modified: $(date +\%Y-\%m-\%dT\%T\%:z)/g" ' a:filePath
+	edit
+endfunction
+
+function AddNoteMetadata(filePath)
+	execute '!echo ---'
+	" execute '!echo created: $(date +\%Y-\%m-\%dT\%T\%:z) >> ' a:filePath
+	" execute '!echo modified: $(date +\%Y-\%m-\%dT\%T\%:z) >> ' a:filePath
+	" execute '!echo --- >> ' a:filePath
+	" execute '!echo "" >> ' a:filePath
+	" execute '!echo \\# ' a:filePath ' >> ' a:filePath
+	edit
+endfunction
+
+autocmd BufWritePost ~/dev/stuff/notes/*.md :call UpdateModifiedDate(@%)
+
+autocmd BufNewFile ~/dev/stuff/notes/todo/*.md, :0read !echo "---";
+	\echo "created: $(date +\%Y-\%m-\%dT\%T\%:z)";
+	\echo "modified: $(date +\%Y-\%m-\%dT\%T\%:z)";
+	\echo "type: Checklist";
+	\echo "---";
+	\echo "";
+	\echo "\#" %:t:r;
+
+autocmd BufNewFile ~/dev/stuff/notes/work/*.md,~/dev/stuff/notes/home/*.md,~/dev/stuff/work/*.md :0read !echo "---";
+	\echo "created: $(date +\%Y-\%m-\%dT\%T\%:z)";
+	\echo "modified: $(date +\%Y-\%m-\%dT\%T\%:z)";
+	\echo "---";
+	\echo "";
+	\echo "\#" %:t:r;
+
+autocmd BufNewFile ~/dev/stuff/notes/journal/*.md :0read !echo "---";
+	\echo "created: $(date +\%Y-\%m-\%dT\%T\%:z)";
+	\echo "modified: $(date +\%Y-\%m-\%dT\%T\%:z)";
+	\echo "type: Journal";
+	\echo "---";
+	\echo "";
+	\echo "\#" %:t:r;
+
 " note autoupdate
-autocmd BufWritePost ~/dev/stuff/notes/* :!git add .; git commit -m "update %:."; git push &
-autocmd VimEnter ~/dev/stuff/notes :!git pull &
+autocmd BufReadPre ~/dev/stuff/notes/* :silent! execute '!git pull &'
+autocmd BufWritePost ~/dev/stuff/notes/* :silent! execute '!git add .; git commit -m "update %:."; git push &'
+autocmd VimEnter ~/dev/stuff/notes :silent! execute '!git pull &'
