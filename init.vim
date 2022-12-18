@@ -12,7 +12,7 @@ nnoremap <A-l> :tabnext<CR>
 
 " clipboard
 set clipboard=unnamedplus
-set colorcolumn=72
+set colorcolumn=100
 
 " Declare the list of plugins.
 Plug 'junegunn/fzf'
@@ -25,6 +25,11 @@ Plug 'dart-lang/dart-vim-plugin'
 call plug#end()
 
 set completeopt+=menuone,noselect,noinsert
+" Merging stuff
+map dp <Nop>
+map do <Nop>
+map do :diffget LO<CR>
+map dp :diffget RE<CR>
 
 " Coc additions
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
