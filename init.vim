@@ -25,11 +25,9 @@ Plug 'dart-lang/dart-vim-plugin'
 call plug#end()
 
 set completeopt+=menuone,noselect,noinsert
-" Merging stuff
-map dp <Nop>
-map do <Nop>
-map do :diffget LO<CR>
-map dp :diffget RE<CR>
+" " Merging stuff
+nnoremap <A-o> :diiffget LO<CR>
+nnoremap <A-p> :diiffget RE<CR>
 
 " Coc additions
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
@@ -48,8 +46,8 @@ let g:go_highlight_types = 1
 
 let g:dart_highlight_types = 1
 
-autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
-autocmd BufWritePre * :silent call CocAction('format')
+autocmd BufWritePre *.go :silent! call CocAction('runCommand', 'editor.action.organizeImport')
+autocmd BufWritePre * :silent! call CocAction('format')
 
 function ColorToANSI(color)
 	if a:color == 81
@@ -111,16 +109,6 @@ hi Search ctermbg=1 ctermfg=0
 " This is not really safe to use
 function UpdateModifiedDate(filePath)
 	silent! execute '!sed -Ei "s/modified: [0-9]*-[0-9]*-[0-9]*T[0-9]*:[0-9]*:[0-9]*\+[0-9]*:[0-9]*/modified: $(date +\%Y-\%m-\%dT\%T\%:z)/g" ' a:filePath
-	edit
-endfunction
-
-function AddNoteMetadata(filePath)
-	execute '!echo ---'
-	" execute '!echo created: $(date +\%Y-\%m-\%dT\%T\%:z) >> ' a:filePath
-	" execute '!echo modified: $(date +\%Y-\%m-\%dT\%T\%:z) >> ' a:filePath
-	" execute '!echo --- >> ' a:filePath
-	" execute '!echo "" >> ' a:filePath
-	" execute '!echo \\# ' a:filePath ' >> ' a:filePath
 	edit
 endfunction
 
