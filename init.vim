@@ -20,6 +20,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'andythigpen/nvim-coverage'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -34,6 +36,14 @@ autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 autocmd CursorHold call CocActionAsync('showSignatureHelp')
 nnoremap gd :call CocActionAsync('jumpDefinition')<CR>
 nnoremap gr :call CocActionAsync('jumpReferences')<CR>
+
+" Code coverage
+lua require("coverage").setup()
+hi SignColumn ctermbg=Black
+hi CoverageCovered ctermfg=Green
+hi CoverageUncovered ctermfg=Red
+hi CoveragePartial ctermfg=Yellow
+command Cov execute "CoverageLoad" | execute "CoverageShow"
 
 " Golang
 let g:go_highlight_build_constraints = 1
@@ -56,7 +66,7 @@ let g:go_highlight_format_strings = 1
 let g:dart_highlight_types = 1
 
 autocmd BufWritePre *.go :silent! call CocAction('runCommand', 'editor.action.organizeImport')
-autocmd BufWritePre * :silent! call CocAction('format')
+autocmd BufWritePre *.go :silent! call CocAction('format')
 
 " Personal color modifications
 hi Pmenu ctermbg=15 ctermfg=0
@@ -70,19 +80,19 @@ hi Number ctermfg=10
 hi Comment ctermfg=7
 hi Todo ctermfg=11
 hi Function ctermfg=5 cterm=bold
-hi CursorLineNr ctermfg=11
-hi CursorLine ctermbg=8
+hi CursorLineNr ctermfg=11 cterm=none
+hi CursorLine ctermbg=8 cterm=none
 hi Operator ctermfg=11
 hi Identifier ctermfg=14 cterm=bold
 hi Type ctermfg=10
-hi Statement ctermfg=11 cterm=NONE
+hi Statement ctermfg=11 cterm=none
 hi String ctermfg=13
 hi Search ctermbg=7 ctermfg=0
 hi CurSearch ctermbg=7 ctermfg=0
 hi CocMenuSel ctermbg=8
-hi Visual ctermbg=8 ctermfg=NONE
+hi Visual ctermbg=8 ctermfg=none
 hi StatusLineNC ctermbg=15 ctermfg=0
-hi ColorColumn ctermfg=11 ctermbg=None
+hi ColorColumn ctermbg=Yellow
 
 hi CocInlayHint ctermfg=7 cterm=italic
 
@@ -124,6 +134,5 @@ autocmd VimEnter ~/dev/stuff/notes :silent! execute '!git pull &'
 
 " Environment variables
 let $CARGO_TARGET_DIR = '.vim/target'
-
 set notermguicolors
-set cursorline
+

@@ -1,4 +1,14 @@
 {
 	"suggest.autoTrigger": "always",
-	"signature.preferShownAbove": true
+	"signature.preferShownAbove": true,
+	"rust-analyzer.procMacro.enable": false,
+	"go.goplsOptions": {
+		"completeUnimported": true,
+		"buildFlags": ["-tags=moose,telio"]
+	},
+	"workspace.ignoredFolders": [
+		"$HOME",
+		"$HOME/.cargo/**",
+		"$HOME/.rustup/**"
+	]
 }
