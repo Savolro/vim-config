@@ -42,11 +42,11 @@ return {
   hi String ctermfg=13
   hi Search ctermbg=7 ctermfg=0
   hi CurSearch ctermbg=7 ctermfg=0
-  hi CocMenuSel ctermbg=8
   hi Visual ctermbg=8 ctermfg=none
   hi StatusLineNC ctermbg=15 ctermfg=0
   hi ColorColumn ctermbg=Yellow
-  hi CocInlayHint ctermfg=7 cterm=italic
+  hi TabLine ctermbg=0 ctermfg=15
+  hi BufferLineBufferSelected ctermfg=11 cterm=italic
 ]])
                 end,
         },
